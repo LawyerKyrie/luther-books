@@ -11,10 +11,14 @@ const items = computed(() => [{
 }, {
   label: 'Blog',
   to: '/blog'
-}, {
+}
+/*
+{
   label: 'Changelog',
   to: '/changelog'
-}])
+}
+*/
+])
 </script>
 
 <template>
@@ -34,6 +38,7 @@ const items = computed(() => [{
     <template #right>
       <UColorModeButton />
 
+      <!--
       <UButton
         icon="i-lucide-log-in"
         color="neutral"
@@ -57,6 +62,7 @@ const items = computed(() => [{
         class="hidden lg:inline-flex"
         to="/signup"
       />
+      -->
     </template>
 
     <template #body>
@@ -66,6 +72,7 @@ const items = computed(() => [{
         class="-mx-2.5"
       />
 
+      <!--
       <USeparator class="my-6" />
 
       <UButton
@@ -82,6 +89,7 @@ const items = computed(() => [{
         to="/signup"
         block
       />
+      -->
     </template>
   </UHeader>
 </template>
