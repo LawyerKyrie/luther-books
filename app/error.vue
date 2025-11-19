@@ -31,9 +31,9 @@ const links = [{
   icon: 'i-lucide-book',
   to: '/docs/getting-started'
 }, {
-  label: 'Pricing',
+  label: 'Find',
   icon: 'i-lucide-credit-card',
-  to: '/pricing'
+  to: '/find'
 }, {
   label: 'Blog',
   icon: 'i-lucide-pencil',

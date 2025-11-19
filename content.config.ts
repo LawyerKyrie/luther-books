@@ -76,7 +76,7 @@ export const collections = {
     type: 'page'
   }),
   pricing: defineCollection({
-    source: '2.pricing.yml',
+    source: '2.find.yml',
     type: 'page',
     schema: z.object({
       plans: z.array(

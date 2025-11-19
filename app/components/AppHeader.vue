@@ -6,8 +6,8 @@ const items = computed(() => [{
   to: '/docs',
   active: route.path.startsWith('/docs')
 }, {
-  label: 'Pricing',
-  to: '/pricing'
+  label: 'Find',
+  to: '/find'
 }, {
   label: 'Blog',
   to: '/blog'

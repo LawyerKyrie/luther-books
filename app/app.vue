@@ -20,7 +20,7 @@ useHead({
 })
 
 useSeoMeta({
-  titleTemplate: '%s - Nuxt SaaS template',
+  titleTemplate: '%s - Luther Books',
   ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/saas-light.png',
   twitterImage: 'https://ui.nuxt.com/assets/templates/nuxt/saas-light.png',
   twitterCard: 'summary_large_image',
@@ -39,9 +39,9 @@ const links = [{
   icon: 'i-lucide-book',
   to: '/docs/getting-started'
 }, {
-  label: 'Pricing',
+  label: 'Find',
   icon: 'i-lucide-credit-card',
-  to: '/pricing'
+  to: '/find'
 }, {
   label: 'Blog',
   icon: 'i-lucide-pencil',
