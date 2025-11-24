@@ -75,37 +75,10 @@ export const collections = {
     source: '1.docs/**/*',
     type: 'page'
   }),
-  pricing: defineCollection({
-    source: '2.find.yml',
+  searching: defineCollection({
+    source: '2.searching.yml',
     type: 'page',
     schema: z.object({
-      plans: z.array(
-        z.object({
-          title: z.string().nonempty(),
-          description: z.string().nonempty(),
-          price: z.object({
-            month: z.string().nonempty(),
-            year: z.string().nonempty()
-          }),
-          billing_period: z.string().nonempty(),
-          billing_cycle: z.string().nonempty(),
-          button: createLinkSchema(),
-          features: z.array(z.string().nonempty()),
-          highlight: z.boolean().optional()
-        })
-      ),
-      logos: z.object({
-        title: z.string().nonempty(),
-        icons: z.array(z.string())
-      }),
-      faq: createBaseSchema().extend({
-        items: z.array(
-          z.object({
-            label: z.string().nonempty(),
-            content: z.string().nonempty()
-          })
-        )
-      })
     })
   }),
   blog: defineCollection({
