@@ -3,6 +3,11 @@ export default defineAppConfig({
     colors: {
       primary: 'blue',
       neutral: 'slate'
+    },
+    accordion: {
+      slots: {
+        item: 'border-b border-default last:border-b-0'
+      }
     }
   }
 })

@@ -1,4 +1,5 @@
-const rows = [
+// useFetch data with table rows content - see search.vue line 35
+const rows2 = [
   {
     id: '100',
     date: '2024-03-11T15:30:00',
@@ -36,5 +37,5 @@ const rows = [
   }
 ]
 export default defineEventHandler(() => {
-  return rows
+  return rows2
 })
