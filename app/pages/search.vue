@@ -2,13 +2,13 @@
 import { h, resolveComponent } from 'vue'
 import { upperFirst } from 'scule' /* Visibility */
 import type { ContextMenuItem, TableColumn, TableRow } from '@nuxt/ui'
-import type { Column, Row } from '@tanstack/vue-table'
+import { type Column, type Row, getPaginationRowModel } from '@tanstack/vue-table'
 import { useClipboard /* useInfiniteScroll */ } from '@vueuse/core'
 
 const toast = useToast()
 const { copy } = useClipboard()
 
-const UBadge = resolveComponent('UBadge')
+// const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 
@@ -26,14 +26,17 @@ useSeoMeta({
 
 type RowCells = {
   id: string
-  date: string
-  status: 'paid' | 'failed' | 'refunded'
-  links: string
-  pages: number
+  tags: string
+  category: string
+  title: string
+  description: string
+  sources: string
+  urls: string
+  formats: string
 }
 
 const { data: rows, pending } = await useFetch<RowCells[]>(
-  '/api/table-rows',
+  '/api/book-table',
   { /* the following line isn't in use, and can be deleted
     key: 'table-rows',
     transform: (data) => {
@@ -46,58 +49,56 @@ const columns: TableColumn<RowCells>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => getHeader(column, '#'),
-    cell: ({ row }) => `#${row.getValue('id')}`
+    cell: ({ row }) => `${row.getValue('id')}`
+  },
+  /* // Hiding - Only showing this on expanded rows
+  {
+    accessorKey: 'tags',
+    header: ({ column }) => getHeader(column, 'Tag'),
+    cell: ({ row }) => `${row.getValue('tags')}`
+  },
+  */
+  {
+    accessorKey: 'category',
+    header: ({ column }) => getHeader(column, 'Category'),
+    cell: ({ row }) => `${row.getValue('category')}`
   },
   {
-    accessorKey: 'date',
-    header: ({ column }) => getHeader(column, 'Date'),
+    accessorKey: 'title',
+    header: ({ column }) => getHeader(column, 'Title'),
+    cell: ({ row }) => `${row.getValue('title')}`
+  },
+  {
+    accessorKey: 'description',
+    header: ({ column }) => getHeader(column, 'Description'),
+    cell: ({ row }) => `${row.getValue('description')}`
+  },
+  /* // Hiding - Only showing this on expanded rows
+  {
+    accessorKey: 'sources',
+    header: ({ column }) => getHeader(column, 'Source(s)'),
     cell: ({ row }) => {
-      return new Date(row.getValue('date')).toLocaleString('en-US', {
-        day: 'numeric',
-        month: 'short',
-        year: '2-digit'
-      })
+      const sourceArray = JSON.stringify(row.original.sources)
+      return h('div', { class: 'text-right font-medium' }, sourceArray)
     }
   },
   {
-    accessorKey: 'status',
-    header: ({ column }) => getHeader(column, 'Status'),
+    accessorKey: 'urls',
+    header: ({ column }) => getHeader(column, 'Url(s)'),
     cell: ({ row }) => {
-      const color = {
-        paid: 'success' as const,
-        failed: 'error' as const,
-        refunded: 'neutral' as const
-      }[row.getValue('status') as string]
-
-      return h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () =>
-        row.getValue('status')
-      )
+      const urlArray = JSON.stringify(row.original.urls)
+      return h('div', { class: 'text-right font-medium' }, urlArray)
     }
   },
   {
-    accessorKey: 'links',
-    header: ({ column }) => getHeader(column, 'Links'),
-    meta: {
-      class: {
-        td: 'w-full'
-      }
-    },
-    cell: ({ row }) => `#${row.getValue('links')}`
-  },
-  {
-    accessorKey: 'pages',
-    header: ({ column }) => h('div', { class: 'text-right' }, getHeader(column, 'Pages')),
+    accessorKey: 'formats',
+    header: ({ column }) => getHeader(column, 'Format(s)'),
     cell: ({ row }) => {
-      const pages = Number.parseFloat(row.getValue('pages'))
-
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'decimal' // 'currency',
-        // currency: 'EUR'
-      }).format(pages)
-
-      return h('div', { class: 'text-right font-medium' }, formatted)
+      const formatArray = JSON.stringify(row.original.formats)
+      return h('div', { class: 'text-right font-medium' }, formatArray)
     }
   },
+  */
   {
     id: 'action'
   }
@@ -164,26 +165,100 @@ function getHeader(column: Column<RowCells>, label: string) {
 const sorting = ref([
   {
     id: 'id',
-    desc: true
+    desc: false
   }
 ])
 /* Visibility */
-const table = useTemplateRef('table')
+const table = useTemplateRef('table') // Pagination also uses uses this ref.
 
 const columnVisibility = ref({
-  date: false,
-  pages: false,
-  action: false
+  id: false,
+  tags: false,
+  category: false,
+  description: false,
+  sources: false,
+  urls: false,
+  formats: false
 })
 
 /* Start Action (Slots) */
 function getDropdownActions(row: Row<RowCells>) {
   // Using this function instead of getRowCellsItems(row) {}
+
+  let arrLength = true
+  if (row.original.sources.length === 1)
+    arrLength = false
+
+  const urlSourceArr = []
+  for (let i = 0; i < row.original.urls.length; i++) {
+    const objLoop = {
+      label: arrLength ? `${row.original.tags[i]}` : `${row.original.sources[i]}`,
+      icon: 'i-lucide-copy',
+      title: `Format: ${row.original.formats[i]}`,
+      onSelect: () => {
+        copy(`${row.original.urls[i]}`)
+        toast.add({
+          title: 'URL copied to clipboard!',
+          color: 'success',
+          icon: 'i-lucide-circle-check'
+        })
+      }
+    }
+    urlSourceArr.push(objLoop)
+  } // End For Loop
+
+  // Transferring urlSourceArr down to "Click to copy URL"
+
   return [
     [
       {
         type: 'label' as const,
-        label: 'Actions'
+        label: `About ID ${row.original.id}`,
+        icon: 'i-lucide-info'
+      }
+    ],
+    [
+      {
+        label: `${row.original.category}`,
+        title: 'Category',
+        icon: 'i-material-symbols-category-outline',
+        onSelect: () => {
+          copy(row.original.category)
+
+          toast.add({
+            title: 'Category copied to clipboard!',
+            color: 'success',
+            icon: 'i-lucide-circle-check'
+          })
+        }
+      },
+      {
+        label: arrLength ? `${row.original.title}` : `${row.original.tags}`,
+        title: 'Tag',
+        icon: arrLength ? 'i-lucide-subtitles' : 'i-lucide-tag',
+        onSelect: () => {
+          copy(row.original.tags)
+
+          toast.add({
+            title: 'Tag copied to clipboard!',
+            color: 'success',
+            icon: 'i-lucide-circle-check'
+          })
+        }
+      },
+      {
+        label: `Source(s):`,
+        icon: 'i-lucide-folder-symlink',
+        children: [
+          [
+            {
+              type: 'label' as const,
+              label: 'Click to copy URL',
+              icon: 'i-lucide-mouse-pointer-click'
+            }
+          ],
+          urlSourceArr
+        ]
       }
     ],
     [
@@ -194,57 +269,6 @@ function getDropdownActions(row: Row<RowCells>) {
         onSelect() {
           row.toggleExpanded()
         }
-      }
-    ],
-    [
-      {
-        label: 'Copy ID',
-        title: row.original.id,
-        icon: 'i-lucide-copy',
-        onSelect: () => {
-          copy(row.original.id.toString())
-
-          toast.add({
-            title: 'ID (original) copied to clipboard!',
-            color: 'success',
-            icon: 'i-lucide-circle-check'
-          })
-        }
-      },
-      {
-        label: 'Copy Link(s)',
-        title: row.original.links,
-        icon: 'i-lucide-copy',
-        onSelect: () => {
-          copy(row.original.links)
-
-          toast.add({
-            title: 'Link(s) copied to clipboard!',
-            color: 'success',
-            icon: 'i-lucide-circle-check'
-          })
-        }
-      },
-      {
-        label: 'Copy Status',
-        title: row.original.status,
-        icon: 'i-lucide-copy',
-        onSelect: () => {
-          copy(row.original.status.toString())
-
-          toast.add({
-            title: 'Status copied to clipboard!',
-            color: 'success',
-            icon: 'i-lucide-circle-check'
-          })
-        }
-      }
-    ],
-    [
-      // { type: 'separator' as const },
-      {
-        label: 'View row object',
-        title: JSON.stringify(row.original)
       }
     ]
   ]
@@ -281,21 +305,30 @@ const reference = computed(() => ({
 
 const open = ref(false)
 const openDebounced = refDebounced(open, 10)
-const selectedRowCells = ref<TableRow<RowCells> | null>(null)
+const selectedRow = ref<TableRow<RowCells> | null>(null)
 
 function onHover(_e: Event, row: TableRow<RowCells> | null) {
-  selectedRowCells.value = row
+  selectedRow.value = row
   open.value = !!row
 }
 /* End Hover */
+
+/* Start Pagination */
+const pagination = ref({
+  pageIndex: 0,
+  pageSize: 10
+})
+/* End Pagination */
 </script>
 
 <template>
   <div v-if="page">
+    <!--
     <UPageHeader
       class="px-4 text-center"
       :title="page.title"
     />
+    -->
     <div class="flex justify-between">
       <!--  -->
       <div class="px-4 py-3.5 border-b border-accented">
@@ -321,7 +354,7 @@ function onHover(_e: Event, row: TableRow<RowCells> | null) {
                   table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
                 },
                 onSelect(e: Event) {
-                  e.preventDefault()
+                  // e.preventDefault()
                 }
               }))
           "
@@ -336,7 +369,11 @@ function onHover(_e: Event, row: TableRow<RowCells> | null) {
         </UDropdownMenu>
       </div>
     </div>
-    <div class="flex flex-col flex-1 w-full">
+    <!--
+      original UTable classNames: flex-1 h-80
+      original div class="flex flex-col flex-1 w-full"
+    -->
+    <div class="w-full">
       <UContextMenu :items="items">
         <!-- Activate sticky header with className: max-h-[312px] -->
         <UTable
@@ -344,11 +381,16 @@ function onHover(_e: Event, row: TableRow<RowCells> | null) {
           v-model:global-filter="globalFilter"
           v-model:sorting="sorting"
           v-model:column-visibility="columnVisibility"
+          v-model:pagination="pagination"
           sticky
           :data="rows || []"
           :columns="columns"
           :loading="pending === true"
-          class="flex-1 h-80"
+          :pagination-options="{
+            getPaginationRowModel: getPaginationRowModel()
+          }"
+          class="flex-1 pl-4"
+          :ui="{ td: 'p-1', th: 'p-1' }"
           @pointermove="
             (ev: PointerEvent) => {
               anchor.x = ev.clientX
@@ -359,19 +401,31 @@ function onHover(_e: Event, row: TableRow<RowCells> | null) {
           @contextmenu="onContextmenu"
         >
           <template #action-cell="{ row }">
-            <UDropdownMenu :items="getDropdownActions(row)">
+            <UDropdownMenu
+              :items="getDropdownActions(row)"
+            >
               <UButton
                 icon="i-lucide-ellipsis-vertical"
                 color="neutral"
                 variant="ghost"
                 aria-label="Actions"
+                @click="console.log('Rows DropDown Menu Clicked')"
               />
+              <!-- getDropdownActions(row) don't run on click at Drowdown menu button -->
             </UDropdownMenu>
           </template>
           <template #expanded="{ row }">
             <pre>{{ row.original }}</pre>
           </template>
         </UTable>
+        <div class="flex justify-center border-t border-default pt-4">
+          <UPagination
+            :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
+            :items-per-page="table?.tableApi?.getState().pagination.pageSize"
+            :total="table?.tableApi?.getFilteredRowModel().rows.length"
+            @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)"
+          />
+        </div>
       </UContextMenu>
       <UPopover
         :content="{ side: 'top', sideOffset: 16, updatePositionStrategy: 'always' }"
@@ -380,7 +434,7 @@ function onHover(_e: Event, row: TableRow<RowCells> | null) {
       >
         <template #content>
           <div class="p-4">
-            {{ selectedRowCells?.original?.id }}
+            {{ selectedRow?.original?.description }}
           </div>
         </template>
       </UPopover>
