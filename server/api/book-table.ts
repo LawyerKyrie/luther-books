@@ -19,7 +19,7 @@ const books = [
     description: 'Best site with search functionality.',
     sources: ['luthers-works.vercel.app'],
     urls: ['https://luther-books.vercel.app/books/luther-writings#walch-edition-2'],
-    formats: ['md/ html']
+    formats: ['md, html']
   },
   {
     id: 3,
@@ -66,11 +66,11 @@ const books = [
     id: 8,
     tags: ['Archive', 'LutheranLibrary'],
     category: 'E. Jacobs Doctrine',
-    title: '📂 Jacobs Book of Concord',
+    title: '📂 E. Jacobs Book of Concord',
     description: 'By Henry Eyster Jacobs (txt, pdf etc.',
     sources: ['archive.org', 'www.lutheranlibrary.org'],
     urls: ['https://archive.org/details/thebookofconcord00unknuoft', 'https://www.lutheranlibrary.org/pdf/250-jacobs-book-of-concord.pdf'],
-    formats: ['txt/ pdf etc.', 'pdf']
+    formats: ['txt. pdf etc.', 'pdf']
   },
   {
     id: 10,
@@ -86,7 +86,7 @@ const books = [
     id: 11,
     tags: ['Historical'],
     category: 'F. Bente, Doctrine',
-    title: 'Historical Introductions to Concordia Triglotta',
+    title: 'Historical Introductions to Triglotta',
     description: 'F. Bente (1921)',
     sources: ['archive.org'],
     urls: ['https://archive.org/details/bente-historical-introductions-triglotta-from-ocr2/mode/1up'],
@@ -94,13 +94,13 @@ const books = [
   },
   {
     id: 12,
-    tags: ['MarkDown', 'txt/pdf etc.'],
+    tags: ['MarkDown', 'Txt, pdf etc.'],
     category: 'Mueller, Doctrine',
     title: '📂 Christian Dogmatics',
-    description: 'Muellers version of Pieper (md etc.)',
+    description: 'Muellers version of Dogmatics by Pieper',
     sources: ['vercel.app.', 'archive.org'],
     urls: ['https://christian-dogmatics.vercel.app', 'https://archive.org/details/muellerchristiandogmatics/mode/2up'],
-    formats: ['MarkDown', 'txt/ pdf etc.']
+    formats: ['MarkDown', 'txt, pdf etc.']
   },
   {
     id: 14,
@@ -110,14 +110,14 @@ const books = [
     description: 'Vol. I, II and III',
     sources: ['archive.org', 'archive.org', 'archive.org'],
     urls: ['https://archive.org/details/christliche-dogmatik-vol-1-2023-10-31-deep-l-en-no-highlight/mode/2up', 'https://archive.org/details/pieper-cdk-2-001-672-deep-l-en/mode/2up', 'https://archive.org/details/cdk-vol-3-deep-l-en-corrected-2023-11-28-no-shading/mode/2up'],
-    formats: ['txt/ pdf etc.', 'txt/ pdf etc.', 'txt/ pdf etc.']
+    formats: ['txt, pdf etc.', 'txt, pdf etc.', 'txt, pdf etc.']
   },
 
   {
     id: 17,
     tags: ['Study-Guide'],
     category: 'Pieper, Doctrine',
-    title: 'Piepers Christian Dogmatics Study Guide',
+    title: 'Pieper, Dogmatics Study Guide',
     description: 'Study Guide to Pieper',
     sources: ['CSLScholar'],
     urls: ['https://scholar.csl.edu/christiandogmatics/'],
@@ -127,11 +127,11 @@ const books = [
     id: 18,
     tags: ['Heinrich Schmid'],
     category: 'Doctrinal Theology',
-    title: 'Doctrinal Theology of Heinrich Schmid (ELC)',
+    title: 'Doctrinal Theology of H. Schmid (ELC)',
     description: 'Schmid, Heinrich (Pieper is referring a lot to this book)',
     sources: ['archive.org'],
     urls: ['https://archive.org/details/doctrinaltheolog00schmuoft'],
-    formats: ['txt/ pdf etc.']
+    formats: ['txt, pdf etc.']
   },
   {
     id: 19,
@@ -141,15 +141,15 @@ const books = [
     description: 'Charles Hodge (1872) Vol I, II and III',
     sources: ['archive.org', 'archive.org', 'archive.org'],
     urls: ['https://archive.org/details/systematic-theology-vol-1/mode/2up', 'https://archive.org/details/systematic-theology-vol-2/mode/2up', 'https://archive.org/details/systematictheolo014257mbp/mode/2up'],
-    formats: ['txt/ pdf etc.', 'txt/ pdf etc.', 'txt/ pdf etc.']
+    formats: ['txt, pdf etc.', 'txt, pdf etc.', 'txt, pdf etc.']
   },
 
   {
     id: 22,
     tags: ['J.A. Quenstedt († 1590)'],
     category: 'Quenstedt, Doctrine',
-    title: 'Index/ quest. of Parts, Chapt., Members, Sect.',
-    description: 'Johannes Andreas Quenstedt (1528–1590)',
+    title: 'Questions & index to Quenstedt Doctr.',
+    description: 'Overview of the doctrine of J. A. Quenstedt (1528–1590)',
     sources: ['trhalvorson.com'],
     urls: ['https://trhalvorson.com/wp-content/uploads/2023/04/Quenstedt_Index.pdf'],
     formats: ['pdf']
@@ -162,7 +162,7 @@ const books = [
     description: 'Luthers small Catechism',
     sources: ['luther-books.vercel.app', 'CPH/ LCMS'],
     urls: ['../books/the-small-catechism', 'https://catechism.cph.org/'],
-    formats: ['md/ html', 'html']
+    formats: ['md, html', 'html']
   },
 
   {
@@ -229,21 +229,21 @@ const books = [
     id: 36,
     tags: ['H. Cole Vol.1', 'H. Cole Vol.2', 'H. Cole Vol.3', 'H. Cole Vol.4'],
     category: 'Select-Works',
-    title: '📂 Offering to the Church of God on HathiTrust',
+    title: '📂 Offering to the Church - HathiTrust',
     description: 'Translated from the works of Luther by Henry Cole',
     sources: ['hathitrust.org', 'hathitrust.org', 'hathitrust.org', 'hathitrust.org'],
     urls: ['https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2n', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2p', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2q', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2r'],
-    formats: ['html/txt/pdf', 'html/txt/pdf', 'html/txt/pdf', 'html/txt/pdf']
+    formats: ['html, txt, pdf', 'html, txt, pdf', 'html, txt, pdf', 'html, txt, pdf']
   },
   {
     id: 40,
     tags: ['H. Cole Vol.1', 'H. Cole Vol.2', 'H. Cole Vol.3', 'H. Cole Vol.4'],
     category: 'Select-Works',
-    title: '📂 Offering to the Church of God on Archive.org',
+    title: '📂 Offering to the Church Archive.org',
     description: '3 volumes of Henry Cole',
     sources: ['archive.org', 'archive.org', 'archive.org', 'hathitrust.org'],
     urls: ['https://archive.org/details/selectworkstrby01luthgoog', 'https://archive.org/details/selectworksmart01colegoog', 'https://archive.org/details/selectworkstrby00luthgoog', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2r'],
-    formats: ['txt/ pdf etc.', 'txt/ pdf etc.', 'txt/ pdf etc.', 'html']
+    formats: ['txt, pdf etc.', 'txt, pdf etc.', 'txt, pdf etc.', 'html']
   },
   {
     id: 44,
@@ -273,7 +273,7 @@ const books = [
     description: 'Site with all sermons and commentaries',
     sources: ['sermons.martinluther.us'],
     urls: ['https://sermons.martinluther.us/workscomm.html'],
-    formats: ['html-pdf']
+    formats: ['html, pdf']
   }
 ]
 

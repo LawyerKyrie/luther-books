@@ -361,7 +361,7 @@ const pagination = ref({
           :content="{ align: 'end' }"
         >
           <UButton
-            label="Columns"
+            label="Show"
             color="neutral"
             variant="outline"
             trailing-icon="i-lucide-chevron-down"

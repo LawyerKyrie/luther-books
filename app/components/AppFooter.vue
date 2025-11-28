@@ -2,35 +2,18 @@
 const columns = [{
   label: 'Resources',
   children: [{
-    label: 'Help center'
+    label: 'Search',
+    to: '/search'
   }, {
-    label: 'Docs'
+    label: 'Blog',
+    to: '/blog'
   }, {
-    label: 'Roadmap'
+    label: 'About',
+    to: '/docs/about'
   }, {
-    label: 'Changelog'
-  }]
-}, {
-  label: 'Features',
-  children: [{
-    label: 'Affiliates'
-  }, {
-    label: 'Portal'
-  }, {
-    label: 'Jobs'
-  }, {
-    label: 'Sponsors'
-  }]
-}, {
-  label: 'Company',
-  children: [{
-    label: 'About'
-  }, {
-    label: 'Pricing'
-  }, {
-    label: 'Careers'
-  }, {
-    label: 'Blog'
+    label: 'Comments',
+    to: 'https://github.com/LawyerKyrie/luther-books/discussions/categories/comments',
+    target: '_blank'
   }]
 }]
 
@@ -90,7 +73,7 @@ function onSubmit() {
 
     <template #left>
       <p class="text-muted text-sm">
-        Built with Nuxt UI • © {{ new Date().getFullYear() }}
+        @LawyerKyrie • © {{ new Date().getFullYear() }}
       </p>
     </template>
 
@@ -112,10 +95,10 @@ function onSubmit() {
         variant="ghost"
       />
       <UButton
-        to="https://github.com/nuxt-ui-templates/saas"
+        to="https://github.com/LawyerKyrie/luther-books"
         target="_blank"
         icon="i-simple-icons-github"
-        aria-label="Nuxt UI on GitHub"
+        aria-label="Luther Books on GitHub"
         color="neutral"
         variant="ghost"
       />

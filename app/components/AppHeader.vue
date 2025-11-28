@@ -1,23 +1,95 @@
 <script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
+
 const route = useRoute()
 
-const items = computed(() => [{
+const items = ref<NavigationMenuItem[]>([{
   label: 'Docs',
   to: '/docs',
-  active: route.path.startsWith('/docs')
+  active: route.path.startsWith('/docs'),
+  children: [
+    {
+      label: 'About',
+      to: '/docs/about'
+    },
+    {
+      label: 'Nuxt UI SaaS',
+      to: '/docs/getting-started',
+      children: [
+        {
+          label: 'Getting Started',
+          to: '/docs/getting-started'
+        },
+        {
+          label: 'Template',
+          to: '/docs/getting-started/template'
+        },
+        {
+          label: 'Usage',
+          to: '/docs/getting-started/usage'
+        }
+      ]
+    },
+    {
+      label: 'Essentials',
+      to: '/docs/essentials',
+      children: [
+        {
+          label: 'Markdown Syntax',
+          to: '/docs/essentials'
+        },
+        {
+          label: 'Code Blocks',
+          to: '/docs/essentials/code-blocks'
+        },
+        {
+          label: 'Prose Components',
+          to: '/docs/essentials/prose-components'
+        },
+        {
+          label: 'Images Embeds',
+          to: '/docs/essentials/images-embeds'
+        }
+      ]
+    }
+  ]
 }, {
   label: 'Search',
   to: '/search'
 }, {
   label: 'Blog',
-  to: '/blog'
+  to: '/blog',
+  children: [
+    {
+      label: 'The 95 Theses',
+      to: '/blog/the-95-theses'
+    },
+    {
+      label: 'The small catechism',
+      to: '/blog/the-small-catechism'
+    },
+    {
+      label: 'Church Postil',
+      to: '/blog/church-postil'
+    },
+    {
+      label: 'House Postil',
+      to: '/blog/house-postil'
+    },
+    {
+      label: 'Book of Concord',
+      to: '/blog/book-of-concord'
+    },
+    {
+      label: 'Christian Dogmatics',
+      to: '/blog/christian-dogmatics'
+    },
+    {
+      label: 'Luther Writings',
+      to: '/blog/luther-writings'
+    }
+  ]
 }
-/*
-{
-  label: 'Changelog',
-  to: '/changelog'
-}
-*/
 ])
 </script>
 
@@ -30,66 +102,27 @@ const items = computed(() => [{
       <TemplateMenu />
     </template>
 
+    <!--
+    :items="items"
+     variant="link"
+    -->
     <UNavigationMenu
       :items="items"
-      variant="link"
+      variant="pill"
+      content-orientation="vertical"
     />
 
     <template #right>
       <UColorModeButton />
-
-      <!--
-      <UButton
-        icon="i-lucide-log-in"
-        color="neutral"
-        variant="ghost"
-        to="/login"
-        class="lg:hidden"
-      />
-
-      <UButton
-        label="Sign in"
-        color="neutral"
-        variant="outline"
-        to="/login"
-        class="hidden lg:inline-flex"
-      />
-
-      <UButton
-        label="Sign up"
-        color="neutral"
-        trailing-icon="i-lucide-arrow-right"
-        class="hidden lg:inline-flex"
-        to="/signup"
-      />
-      -->
     </template>
 
     <template #body>
       <UNavigationMenu
         :items="items"
+        type="single"
         orientation="vertical"
         class="-mx-2.5"
       />
-
-      <!--
-      <USeparator class="my-6" />
-
-      <UButton
-        label="Sign in"
-        color="neutral"
-        variant="subtle"
-        to="/login"
-        block
-        class="mb-3"
-      />
-      <UButton
-        label="Sign up"
-        color="neutral"
-        to="/signup"
-        block
-      />
-      -->
     </template>
   </UHeader>
 </template>
