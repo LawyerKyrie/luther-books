@@ -50,15 +50,16 @@ const columns: TableColumn<RowCells>[] = [
         'icon': 'i-lucide-chevron-down',
         'square': true,
         'aria-label': 'Expand',
+        'name': row.getIsExpanded() ? 'expanded' : `collapsed-${row.getValue('id')}`,
         'ui': {
           leadingIcon: [
             'transition-transform',
-            row.getIsExpanded() ? 'duration-200 rotate-180' : 'collapsed-manually'
+            row.getIsExpanded() ? 'duration-200 rotate-180' : ''
           ]
         },
-        'onClick': () => {
+        'onClick': () => { // on button
           row.toggleExpanded()
-          collapseOpenOnExpand(row)
+          savingRowOnExpand(row)
         }
       })
   },
@@ -120,7 +121,7 @@ const columns: TableColumn<RowCells>[] = [
   }
 ]
 
-// See also autoCallpasedRowHandler(row) below
+// See also fulfillAutoCollapsingOfRow() below
 const expanded = ref({}) // ref({ 0: true }) First row open on load
 const globalFilter = ref('') // Start with this filter
 
@@ -287,11 +288,12 @@ function getDropdownActions(row: Row<RowCells>) {
     [
       {
         label: row.getIsExpanded() ? 'Collapse' : 'Expand',
-        title: JSON.stringify(row.original),
-        icon: 'i-lucide-expand',
-        onSelect() {
+        id: 'homeButtonRef',
+        title: row.getIsExpanded() ? 'Collapse or just open a new row to auto collapse open rows!' : JSON.stringify(row.original),
+        icon: row.getIsExpanded() ? 'i-fluent-arrow-collapse-all-24-regular' : 'i-fluent-arrow-expand-all-24-regular',
+        onSelect() { // on right click on row
           row.toggleExpanded()
-          collapseOpenOnExpand(row)
+          savingRowOnExpand(row)
         }
       }
     ]
@@ -345,47 +347,8 @@ const pagination = ref({
 })
 /* End Pagination */
 
-/* Start of expandable rows */
-/*   *******************************************************  */
+/* Creating clickable rows & simulate click if url-length === 1 */
 
-// Manually control the expanded state (only one ID at a time)
-const expandedRowId = ref<number | null>(null) // required
-
-const collapseOpenOnExpand = (row) => {
-  console.log('The row.original (in collapseOpenOnExpand is: ')
-  console.log(row.original)
-  // If the clicked row is already expanded, collapse it.
-  if (expandedRowId.value !== row.original.id) {
-    expandedRowId.value = row.original.id
-  } else expandedRowId.value = null // maybe never happen
-  autoCallpasedRowHandler(row)
-}
-
-// Function to check if a row should be expanded
-const isRowExpanded = row => expandedRowId.value === row.original.id
-
-const trElementRef = ref<HTMLDivElement | null>(null)
-const buttonElementRef = ref<HTMLDivElement | null>(null)
-const newTrElementRef = ref<HTMLDivElement | null>(null)
-
-const autoCallpasedRowHandler = async (row) => {
-  // Fixing the icon after auto collapsed row
-  console.log('autoCallpasedRowHandler is started with parent row object: ')
-  console.log(row)
-  if (Object.keys(expanded.value).length === 0) {
-    return
-  } else if (Object.keys(expanded.value).length === 1) {
-    await nextTick()
-    trElementRef.value = document.querySelector('tbody > tr[data-expanded="true"]')!
-    buttonElementRef.value = trElementRef.value.querySelector('td > button')!
-  } else if (Object.keys(expanded.value).length === 2) {
-    await nextTick()
-    newTrElementRef.value = document.querySelector('tbody > tr[data-expanded="true"]')!
-    buttonElementRef.value?.click()
-  }
-}
-
-/* Creating clickable rows & simulate click if url-length > 1 */
 function openUrlOnRowClick(event, row) {
   const urlLength = row.original.urls.length
   if (urlLength === 1) { // follow the link on click
@@ -408,7 +371,54 @@ function openUrlOnRowClick(event, row) {
 }
 /* End of clickable rows */
 
-/* Template elements saved in variables */
+/* Start of expandable rows */
+
+// Func. isRowExpanded is running in template #expanded v-if="isRowExpanded(row)"
+const isRowExpanded = row => expandedRowId.value === row.original.id
+
+// Manually control the expanded state (only one ID at a time)
+const expandedRowId = ref<number | null>(null) // required to auto collapse
+const buttonElementRef = ref<HTMLDivElement | null>(null)
+
+const savingRowOnExpand = async (row) => {
+  // console.log('The function "savingRowOnExpand" is required to collapse expanded rows!')
+  if (expandedRowId.value !== row.original.id) {
+    // Expanded row is saved (on every expand)
+    expandedRowId.value = row.original.id
+    if (Object.keys(expanded.value).length === 1) {
+      // This code is running on the second (2) expanded row
+      await nextTick()
+      buttonElementRef.value = document.querySelector('tr > td> button[name="expanded"]')!
+    }
+  } // this else statement never happen
+  fulfillAutoCollapsingOfRow()
+} // fulfill auto collapsing of row
+
+const fulfillAutoCollapsingOfRow = async () => {
+  if (Object.keys(expanded.value).length === 0) {
+    // console.log('This runs when a row is collapsed manually!')
+    return
+  } else if (Object.keys(expanded.value).length === 2) {
+    await nextTick()
+    buttonElementRef.value?.click()
+  }
+}
+
+const last2rows = []
+/*
+  This function start form template #expand v-else.
+  The function is running twice after the second row is expanded.
+*/
+function collapsedVelseTemplateRow(row) {
+  if (last2rows.length === 2) last2rows.shift()
+  last2rows.push(row.original.id)
+  if (last2rows.length === 2 && last2rows[0] !== last2rows[1]) {
+    console.log(`Row ${last2rows[0]} Collapsed!`)
+    console.log(`Row ${last2rows[1]} Expanded!`)
+  }
+}
+
+/* End of expandable rows */
 </script>
 
 <template>
@@ -492,7 +502,6 @@ function openUrlOnRowClick(event, row) {
           @hover="onHover"
           @contextmenu="onContextmenu"
           @select="openUrlOnRowClick"
-          @click="console.log('Row Expand Action Function running...')"
         >
           <template #action-cell="{ row }">
             <UDropdownMenu
@@ -508,10 +517,17 @@ function openUrlOnRowClick(event, row) {
             </UDropdownMenu>
           </template>
           <template #expanded="{ row }">
-            <span v-if="isRowExpanded(row)">
+            <span
+              v-if="isRowExpanded(row)"
+              id="expandedVif"
+            >
               <ExpandRow :row-parent="row" />
             </span>
-            <span v-else>
+            <span
+              v-else
+              id="expandedVelse"
+            >
+              <span class="hidden">{{ collapsedVelseTemplateRow(row) }}</span>
               <ExpandRow :row-parent="row" />
             </span>
           </template>

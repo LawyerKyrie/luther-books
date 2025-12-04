@@ -25,7 +25,6 @@ features:
       description: Search for the best lutheran resource sites on net.
       icon: i-heroicons-book-open
       to: /search
-      target: _blank
     - title: All of Luthers Works
       description: All Luthers Writings; 22 446 pages in 25 volumes
       icon: i-heroicons-academic-cap
