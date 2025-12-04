@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, resolveComponent } from 'vue'
+import { h, resolveComponent, nextTick } from 'vue'
 import { upperFirst } from 'scule' /* Visibility */
 import type { ContextMenuItem, TableColumn, TableRow } from '@nuxt/ui'
 import { type Column, type Row, getPaginationRowModel } from '@tanstack/vue-table'
@@ -25,27 +25,43 @@ useSeoMeta({
 })
 
 type RowCells = {
-  id: string
-  tags: string
+  id: number
+  tags: array
   category: string
   title: string
   description: string
-  sources: string
-  urls: string
-  formats: string
+  sources: array
+  urls: array
+  formats: array
 }
 
 const { data: rows, pending } = await useFetch<RowCells[]>(
   '/api/book-table',
-  { /* the following line isn't in use, and can be deleted
-    key: 'table-rows',
-    transform: (data) => {
-      return (data?.map(row => ({ ...row })) || [])
-    } // server: false, lazy: true, immediate: false */
-  }
+  {}
 )
 
 const columns: TableColumn<RowCells>[] = [
+  {
+    id: 'expand',
+    cell: ({ row }) =>
+      h(UButton, {
+        'color': 'neutral',
+        'variant': 'ghost',
+        'icon': 'i-lucide-chevron-down',
+        'square': true,
+        'aria-label': 'Expand',
+        'ui': {
+          leadingIcon: [
+            'transition-transform',
+            row.getIsExpanded() ? 'duration-200 rotate-180' : 'collapsed-manually'
+          ]
+        },
+        'onClick': () => {
+          row.toggleExpanded()
+          collapseOpenOnExpand(row)
+        }
+      })
+  },
   {
     accessorKey: 'id',
     header: ({ column }) => getHeader(column, '#'),
@@ -68,12 +84,12 @@ const columns: TableColumn<RowCells>[] = [
     header: ({ column }) => getHeader(column, 'Title'),
     cell: ({ row }) => `${row.getValue('title')}`
   },
+  /* // Hiding - Only showing this on expanded rows
   {
     accessorKey: 'description',
     header: ({ column }) => getHeader(column, 'Description'),
     cell: ({ row }) => `${row.getValue('description')}`
   },
-  /* // Hiding - Only showing this on expanded rows
   {
     accessorKey: 'sources',
     header: ({ column }) => getHeader(column, 'Source(s)'),
@@ -104,9 +120,11 @@ const columns: TableColumn<RowCells>[] = [
   }
 ]
 
+// See also autoCallpasedRowHandler(row) below
+const expanded = ref({}) // ref({ 0: true }) First row open on load
 const globalFilter = ref('') // Start with this filter
 
-/* Sorting */
+/* Start Sorting */
 function getHeader(column: Column<RowCells>, label: string) {
   const isSorted = column.getIsSorted()
 
@@ -168,7 +186,10 @@ const sorting = ref([
     desc: false
   }
 ])
-/* Visibility */
+
+/* End Sorting */
+
+/* Start Visibility */
 const table = useTemplateRef('table') // Pagination also uses uses this ref.
 
 const columnVisibility = ref({
@@ -180,6 +201,7 @@ const columnVisibility = ref({
   urls: false,
   formats: false
 })
+/* End Visibility */
 
 /* Start Action (Slots) */
 function getDropdownActions(row: Row<RowCells>) {
@@ -194,7 +216,7 @@ function getDropdownActions(row: Row<RowCells>) {
     const objLoop = {
       label: arrLength ? `${row.original.tags[i]}` : `${row.original.sources[i]}`,
       icon: 'i-lucide-copy',
-      title: `Format: ${row.original.formats[i]}`,
+      title: `${row.original.formats[i]}`,
       onSelect: () => {
         copy(`${row.original.urls[i]}`)
         toast.add({
@@ -234,7 +256,7 @@ function getDropdownActions(row: Row<RowCells>) {
       },
       {
         label: arrLength ? `${row.original.title}` : `${row.original.tags}`,
-        title: 'Tag',
+        title: arrLength ? 'Title' : 'Tag',
         icon: arrLength ? 'i-lucide-subtitles' : 'i-lucide-tag',
         onSelect: () => {
           copy(row.original.tags)
@@ -247,13 +269,14 @@ function getDropdownActions(row: Row<RowCells>) {
         }
       },
       {
-        label: `Source(s):`,
+        label: `Link(s):`,
         icon: 'i-lucide-folder-symlink',
         children: [
           [
             {
-              type: 'label' as const,
+              // type: 'label' as const,
               label: 'Click to copy URL',
+              title: 'Hover to see FORMATs',
               icon: 'i-lucide-mouse-pointer-click'
             }
           ],
@@ -268,6 +291,7 @@ function getDropdownActions(row: Row<RowCells>) {
         icon: 'i-lucide-expand',
         onSelect() {
           row.toggleExpanded()
+          collapseOpenOnExpand(row)
         }
       }
     ]
@@ -277,7 +301,8 @@ function getDropdownActions(row: Row<RowCells>) {
 
 /* Start RowCells context menu event */
 const items = ref<ContextMenuItem[]>([])
-/* function getRowCellsItems(row: TableRow<RowCells>) {
+/* // Not used anymore - using getDropdownActions instead
+function getRowCellsItems(row: TableRow<RowCells>) {
   return [
     // All the Objects in getDropdownActions - without arrays
   ]
@@ -311,7 +336,7 @@ function onHover(_e: Event, row: TableRow<RowCells> | null) {
   selectedRow.value = row
   open.value = !!row
 }
-/* End Hover */
+/* ********************** End Hover ********************* */
 
 /* Start Pagination */
 const pagination = ref({
@@ -319,6 +344,71 @@ const pagination = ref({
   pageSize: 10
 })
 /* End Pagination */
+
+/* Start of expandable rows */
+/*   *******************************************************  */
+
+// Manually control the expanded state (only one ID at a time)
+const expandedRowId = ref<number | null>(null) // required
+
+const collapseOpenOnExpand = (row) => {
+  console.log('The row.original (in collapseOpenOnExpand is: ')
+  console.log(row.original)
+  // If the clicked row is already expanded, collapse it.
+  if (expandedRowId.value !== row.original.id) {
+    expandedRowId.value = row.original.id
+  } else expandedRowId.value = null // maybe never happen
+  autoCallpasedRowHandler(row)
+}
+
+// Function to check if a row should be expanded
+const isRowExpanded = row => expandedRowId.value === row.original.id
+
+const trElementRef = ref<HTMLDivElement | null>(null)
+const buttonElementRef = ref<HTMLDivElement | null>(null)
+const newTrElementRef = ref<HTMLDivElement | null>(null)
+
+const autoCallpasedRowHandler = async (row) => {
+  // Fixing the icon after auto collapsed row
+  console.log('autoCallpasedRowHandler is started with parent row object: ')
+  console.log(row)
+  if (Object.keys(expanded.value).length === 0) {
+    return
+  } else if (Object.keys(expanded.value).length === 1) {
+    await nextTick()
+    trElementRef.value = document.querySelector('tbody > tr[data-expanded="true"]')!
+    buttonElementRef.value = trElementRef.value.querySelector('td > button')!
+  } else if (Object.keys(expanded.value).length === 2) {
+    await nextTick()
+    newTrElementRef.value = document.querySelector('tbody > tr[data-expanded="true"]')!
+    buttonElementRef.value?.click()
+  }
+}
+
+/* Creating clickable rows & simulate click if url-length > 1 */
+function openUrlOnRowClick(event, row) {
+  const urlLength = row.original.urls.length
+  if (urlLength === 1) { // follow the link on click
+    const url = JSON.stringify(row.original.urls[0]).slice(1, -1)
+    return navigateTo(`${url}`, {
+      open: {
+        target: '_blank'
+      }
+    })
+  } else if (urlLength > 1) { // then simulate click
+    const currentTd = event.target
+    const nextTd = currentTd.nextElementSibling
+    if (currentTd.tagName && nextTd.tagName === 'TD') {
+      const buttonInActionTd = nextTd.querySelector('button')
+      if (buttonInActionTd) {
+        buttonInActionTd.click()
+      }
+    }
+  }
+}
+/* End of clickable rows */
+
+/* Template elements saved in variables */
 </script>
 
 <template>
@@ -378,6 +468,7 @@ const pagination = ref({
         <!-- Activate sticky header with className: max-h-[312px] -->
         <UTable
           ref="table"
+          v-model:expanded="expanded"
           v-model:global-filter="globalFilter"
           v-model:sorting="sorting"
           v-model:column-visibility="columnVisibility"
@@ -389,8 +480,9 @@ const pagination = ref({
           :pagination-options="{
             getPaginationRowModel: getPaginationRowModel()
           }"
-          class="flex-1 pl-4"
-          :ui="{ td: 'p-1', th: 'p-1' }"
+          :ui="{ tr: 'data-[expanded=true]:bg-elevated/50', td: 'p-1', th: 'p-1' }"
+          :rows="rows || []"
+          class="flex-1"
           @pointermove="
             (ev: PointerEvent) => {
               anchor.x = ev.clientX
@@ -399,6 +491,8 @@ const pagination = ref({
           "
           @hover="onHover"
           @contextmenu="onContextmenu"
+          @select="openUrlOnRowClick"
+          @click="console.log('Row Expand Action Function running...')"
         >
           <template #action-cell="{ row }">
             <UDropdownMenu
@@ -409,13 +503,17 @@ const pagination = ref({
                 color="neutral"
                 variant="ghost"
                 aria-label="Actions"
-                @click="console.log('Rows DropDown Menu Clicked')"
               />
               <!-- getDropdownActions(row) don't run on click at Drowdown menu button -->
             </UDropdownMenu>
           </template>
           <template #expanded="{ row }">
-            <pre>{{ row.original }}</pre>
+            <span v-if="isRowExpanded(row)">
+              <ExpandRow :row-parent="row" />
+            </span>
+            <span v-else>
+              <ExpandRow :row-parent="row" />
+            </span>
           </template>
         </UTable>
         <div class="flex justify-center border-t border-default pt-4">
@@ -427,13 +525,14 @@ const pagination = ref({
           />
         </div>
       </UContextMenu>
+      <!-- Activated on hover - Popup the description -->
       <UPopover
         :content="{ side: 'top', sideOffset: 16, updatePositionStrategy: 'always' }"
         :open="openDebounced"
         :reference="reference"
       >
         <template #content>
-          <div class="p-4">
+          <div class="p-4 max-w-xs">
             {{ selectedRow?.original?.description }}
           </div>
         </template>

@@ -10,7 +10,8 @@ const items = ref<NavigationMenuItem[]>([{
   children: [
     {
       label: 'About',
-      to: '/docs/about'
+      to: '/docs/about',
+      title: 'Docs with about page etc.'
     },
     {
       label: 'Nuxt UI SaaS',
@@ -55,7 +56,8 @@ const items = ref<NavigationMenuItem[]>([{
   ]
 }, {
   label: 'Search',
-  to: '/search'
+  to: '/search',
+  title: 'Search for Luther Books'
 }, {
   label: 'Blog',
   to: '/blog',
@@ -109,6 +111,7 @@ const items = ref<NavigationMenuItem[]>([{
     <UNavigationMenu
       :items="items"
       variant="pill"
+      :tooltip="true"
       content-orientation="vertical"
     />
 

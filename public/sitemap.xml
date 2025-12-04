@@ -9,98 +9,83 @@
 
 <url>
   <loc>https://luther-books.vercel.app/</loc>
-  <lastmod>2025-11-19T00:20:23+00:00</lastmod>
+  <lastmod>2025-11-28T06:20:24+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>https://luther-books.vercel.app/docs/about</loc>
+  <lastmod>2025-11-28T06:20:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/search</loc>
+  <lastmod>2025-11-28T06:20:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/blog/book-of-concord</loc>
+  <lastmod>2025-11-28T06:20:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/blog/luther-writings</loc>
+  <lastmod>2025-11-28T06:20:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/blog/the-95-theses</loc>
+  <lastmod>2025-11-28T06:20:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/blog/the-small-catechism</loc>
+  <lastmod>2025-11-28T06:21:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/blog/church-postil</loc>
+  <lastmod>2025-11-28T06:21:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://luther-books.vercel.app/docs/getting-started</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/find</loc>
-  <lastmod>2025-11-19T00:20:26+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog</loc>
-  <lastmod>2025-11-19T00:20:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/changelog</loc>
-  <lastmod>2025-11-19T00:20:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/login</loc>
-  <lastmod>2025-11-19T00:20:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/signup</loc>
-  <lastmod>2025-11-19T00:20:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/docs/getting-started/installation</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
+  <lastmod>2025-11-28T06:21:00+00:00</lastmod>
   <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/blog/christian-dogmatics</loc>
+  <lastmod>2025-11-28T06:22:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://luther-books.vercel.app/docs/getting-started/template</loc>
+  <lastmod>2025-11-28T06:22:01+00:00</lastmod>
+  <priority>0.51</priority>
 </url>
 <url>
   <loc>https://luther-books.vercel.app/docs/getting-started/usage</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
+  <lastmod>2025-11-28T06:22:01+00:00</lastmod>
+  <priority>0.41</priority>
 </url>
 <url>
-  <loc>https://luther-books.vercel.app/docs/essentials/markdown-syntax</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
+  <loc>https://luther-books.vercel.app/docs/essentials</loc>
+  <lastmod>2025-11-28T06:22:01+00:00</lastmod>
+  <priority>0.33</priority>
 </url>
 <url>
   <loc>https://luther-books.vercel.app/docs/essentials/code-blocks</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
+  <lastmod>2025-11-28T06:22:01+00:00</lastmod>
+  <priority>0.26</priority>
 </url>
 <url>
   <loc>https://luther-books.vercel.app/docs/essentials/prose-components</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
+  <lastmod>2025-11-28T06:22:02+00:00</lastmod>
+  <priority>0.21</priority>
 </url>
 <url>
   <loc>https://luther-books.vercel.app/docs/essentials/images-embeds</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog/asian-cuisine</loc>
-  <lastmod>2025-11-19T00:20:31+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog/pyrenees</loc>
-  <lastmod>2025-11-19T00:20:31+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog/james-webb</loc>
-  <lastmod>2025-11-19T00:20:31+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog/meditation</loc>
-  <lastmod>2025-11-19T00:20:31+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog/animals</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://luther-books.vercel.app/blog/cryptocurrencies</loc>
-  <lastmod>2025-11-19T00:20:32+00:00</lastmod>
-  <priority>0.64</priority>
+  <lastmod>2025-11-28T06:22:02+00:00</lastmod>
+  <priority>0.17</priority>
 </url>
 
 

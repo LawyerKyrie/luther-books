@@ -9,8 +9,5 @@ export default defineAppConfig({
         item: 'border-b border-default last:border-b-0'
       }
     }
-    // Set a global default padding in the table
-    // td: 'p-2',
-    // th: 'p-2'
   }
 })

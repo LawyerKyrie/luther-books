@@ -10,7 +10,6 @@ hero:
       icon: i-heroicons-magnifying-glass
       trailing: true
       to: /search
-      target: _blank
       size: xl
     - label: Blog
       icon: i-heroicons-book-open-solid
@@ -18,9 +17,8 @@ hero:
       color: neutral
       variant: subtle
       to: /blog
-      target: _blank
 features:
-  title: A Luther Students Best Site!
+  title: A Luther Student's Best Site!
   description: Best Mobil friendly resource site for Luther Books and writings - built by a Luther student with programming skills.
   items:
     - title: Search
@@ -32,14 +30,14 @@ features:
       description: All Luthers Writings; 22 446 pages in 25 volumes
       icon: i-heroicons-academic-cap
       to: https://luthers-works-v1.vercel.app
-      target: '_blank'
-    - title: 'Book of Concord'
-      description: 'List of Book of Concord online'
-      icon: 'i-heroicons-academic-cap-solid'
-      to: './blog/book-of-concord'
+      target: _blank
+    - title: Book of Concord
+      description: List of Book of Concord online
+      icon: i-heroicons-academic-cap-solid
+      to: ./blog/book-of-concord
       target: _blank
     - title: Christian Dogmatics
-      description: Mueller´ version of Pieper´ work
+      description: Mueller' version of Pieper' work
       icon: i-heroicons-queue-list
       to: https://christian-dogmatics.vercel.app
       target: _blank
@@ -64,7 +62,7 @@ features:
       to: ./blog/church-postil
       target: _blank
 cta:
-  title: Ready and comment!
+  title: Read and comment!
   description: Please participate add your own comments to the content!
   links:
     - label: Create a Comment

@@ -25,22 +25,25 @@ onUnmounted(() => {
 <template>
   <ClientOnly>
     <Transition name="fade">
-      <UButton
-        v-if="showButton"
-        icon="i-heroicons-arrow-up-20-solid"
-        size="lg"
-        color="primary"
-        variant="solid"
-        class="fixed bottom-1 right-1 z-50 rounded-full shadow-lg"
-        aria-label="Back to top"
-        @click="scrollToTop"
-      />
+      <div v-show="showButton">
+        <UButton
+          v-if="showButton"
+          icon="i-heroicons-arrow-up-20-solid"
+          size="lg"
+          color="primary"
+          variant="solid"
+          class="fixed bottom-1 right-1 z-50 rounded-full shadow-lg"
+          aria-label="Back to top"
+          @click="scrollToTop"
+        />
+      </div>
     </Transition>
   </ClientOnly>
 </template>
 
 <style scoped>
 /* Define transition for a smooth fade effect */
+/*
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s
@@ -49,4 +52,5 @@ onUnmounted(() => {
 .fade-leave-to {
   opacity: 0
 }
+  */
 </style>

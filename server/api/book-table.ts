@@ -6,7 +6,7 @@ const books = [
     tags: ['WA (Ger)'],
     category: 'Weimar Edition',
     title: 'Weimar Edition - WA',
-    description: 'Dr. Martin Luthers Werke (Ger)',
+    description: 'Dr. Martin Luthers Werke - WA (Ger)',
     sources: ['Lutherdansk'],
     urls: ['http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm#ab3'],
     formats: ['pdf/doc/flip']
@@ -15,10 +15,10 @@ const books = [
     id: 2,
     tags: ['St. Louis (St.L).'],
     category: 'Walck Edition',
-    title: 'Revised Walch Edition of Luthers work',
-    description: 'Best site with search functionality.',
+    title: 'Walch 2 Edition of Luthers work',
+    description: 'Overview of all (St.L) volumes with links.',
     sources: ['luthers-works.vercel.app'],
-    urls: ['https://luther-books.vercel.app/books/luther-writings#walch-edition-2'],
+    urls: ['https://luther-books.vercel.app/blog/luther-writings#walch-edition-2'],
     formats: ['md, html']
   },
   {
@@ -36,7 +36,7 @@ const books = [
     tags: ['GodRules.net'],
     category: 'Books, comments etc.',
     title: 'Sermons, Commentary & other Works',
-    description: 'Very big',
+    description: 'Big overview of sermons etc. on GodRules.net',
     sources: ['godrules.net/library/luther'],
     urls: ['https://godrules.net/library/luther/luther.htm'],
     formats: ['html']
@@ -45,7 +45,7 @@ const books = [
     id: 5,
     tags: ['HathiTrust'],
     category: '496 online books',
-    title: '496 Luther-books on hathitrust.org',
+    title: '496 Luther books at HathiTrust',
     description: 'The best alternative to archive.org and annas-archive.org',
     sources: ['hathitrust.org'],
     urls: ['https://catalog.hathitrust.org/Search/Home?adv=1&setft=true&ft=ft&lookfor%5B%5D=Luther%2C+Martin%2C+1483-1546.&format%5B%5D=author&fqor-language%5B%5D=English'],
@@ -56,7 +56,7 @@ const books = [
     tags: ['TheBookOfConcord', 'BookOfConcord'],
     category: 'Book of Concord',
     title: '📂 Best online Book of Concord',
-    description: 'With numbered sections (html)',
+    description: 'Two similar sites With numbered sections (html)',
     sources: ['thebookofconcord.org.', 'bookofconcord.org'],
     urls: ['https://thebookofconcord.org/three-universal-or-ecumenical-creeds/', 'https://bookofconcord.org/'],
     formats: ['html', 'html']
@@ -86,8 +86,8 @@ const books = [
     id: 11,
     tags: ['Historical'],
     category: 'F. Bente, Doctrine',
-    title: 'Historical Introductions to Triglotta',
-    description: 'F. Bente (1921)',
+    title: 'Bente, Historical Introductions',
+    description: 'Bente, Hist. intro to Concordia Triglotta (1921)',
     sources: ['archive.org'],
     urls: ['https://archive.org/details/bente-historical-introductions-triglotta-from-ocr2/mode/1up'],
     formats: ['txt/ pdf etc.']
@@ -127,8 +127,8 @@ const books = [
     id: 18,
     tags: ['Heinrich Schmid'],
     category: 'Doctrinal Theology',
-    title: 'Doctrinal Theology of H. Schmid (ELC)',
-    description: 'Schmid, Heinrich (Pieper is referring a lot to this book)',
+    title: 'Doctrinal Theology of H. Schmid',
+    description: 'Schmid, Heinrich (ELC) (Pieper is referring a lot to this book)',
     sources: ['archive.org'],
     urls: ['https://archive.org/details/doctrinaltheolog00schmuoft'],
     formats: ['txt, pdf etc.']
@@ -148,7 +148,7 @@ const books = [
     id: 22,
     tags: ['J.A. Quenstedt († 1590)'],
     category: 'Quenstedt, Doctrine',
-    title: 'Questions & index to Quenstedt Doctr.',
+    title: 'Questions & index to Quenstedt',
     description: 'Overview of the doctrine of J. A. Quenstedt (1528–1590)',
     sources: ['trhalvorson.com'],
     urls: ['https://trhalvorson.com/wp-content/uploads/2023/04/Quenstedt_Index.pdf'],
@@ -161,7 +161,7 @@ const books = [
     title: '📂 Small catechism',
     description: 'Luthers small Catechism',
     sources: ['luther-books.vercel.app', 'CPH/ LCMS'],
-    urls: ['../books/the-small-catechism', 'https://catechism.cph.org/'],
+    urls: ['../blog/the-small-catechism', 'https://catechism.cph.org/'],
     formats: ['md, html', 'html']
   },
 
@@ -172,7 +172,7 @@ const books = [
     title: 'The 95 Theses',
     description: 'The 95 Theses in MD format',
     sources: 'luther-books.vercel.app',
-    urls: ['../books/the-95-theses'],
+    urls: ['../blog/the-95-theses'],
     formats: ['md/ html']
   },
   {
@@ -229,7 +229,7 @@ const books = [
     id: 36,
     tags: ['H. Cole Vol.1', 'H. Cole Vol.2', 'H. Cole Vol.3', 'H. Cole Vol.4'],
     category: 'Select-Works',
-    title: '📂 Offering to the Church - HathiTrust',
+    title: '📂 Works of Cole on HathiTrust',
     description: 'Translated from the works of Luther by Henry Cole',
     sources: ['hathitrust.org', 'hathitrust.org', 'hathitrust.org', 'hathitrust.org'],
     urls: ['https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2n', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2p', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2q', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2r'],
@@ -239,7 +239,7 @@ const books = [
     id: 40,
     tags: ['H. Cole Vol.1', 'H. Cole Vol.2', 'H. Cole Vol.3', 'H. Cole Vol.4'],
     category: 'Select-Works',
-    title: '📂 Offering to the Church Archive.org',
+    title: '📂 Works of Cole on archive.org',
     description: '3 volumes of Henry Cole',
     sources: ['archive.org', 'archive.org', 'archive.org', 'hathitrust.org'],
     urls: ['https://archive.org/details/selectworkstrby01luthgoog', 'https://archive.org/details/selectworksmart01colegoog', 'https://archive.org/details/selectworkstrby00luthgoog', 'https://babel.hathitrust.org/cgi/pt?id=hvd.ah3v2r'],
