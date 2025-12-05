@@ -5,8 +5,8 @@ const props = defineProps({
   rowParent: Object
 })
 
+/*
 interface CustomNavigationMenuItem extends NavigationMenuItem {
-  /*
   icon?: string
   label?: string
   title?: string
@@ -15,9 +15,9 @@ interface CustomNavigationMenuItem extends NavigationMenuItem {
   target?: string
   badge?: unknown
   children?: NavigationMenuItem[]
-  */
   ui?: unknown
 }
+*/
 
 const links = props.rowParent?.original.urls.length
 
@@ -86,12 +86,14 @@ const dropdownLinks = [
     to: column.urlLink,
     target: '_blank',
     slot: 'components' as const,
+    /*
     ui: {
       leadingIcon: [ // This error in MS Code can be ignored
         'transition-transform',
         links === 1 ? 'duration-200 rotate-180' : 'collapsed-manually'
       ]
     },
+    */
     children: linkChildren
   }
   /*
@@ -106,17 +108,73 @@ const dropdownLinks = [
 /*
 Original items declaration (definition) syntax:
 const items = ref<NavigationMenuItem[]>( dropdownLinks )
-
-Source for new syntax:
-
 */
 
-const items: CustomNavigationMenuItem[] = dropdownLinks // OK
+// const items: CustomNavigationMenuItem[] = dropdownLinks // OK
+const items = ref<NavigationMenuItem[]>( dropdownLinks )
+/*
+  [
+    {
+      label: '',
+      title: `ID: ${column.id}`,
+      icon: 'i-fluent-emoji-high-contrast-id-button',
+      badge: column.id
+    },
+    {
+      icon: 'i-carbon-category',
+      title: `Category: ${column.category}`,
+      children: [
+        {
+          label: 'Category',
+          icon: 'i-carbon-category-new',
+          description: column.category
+        }
+      ]
+    },
+    {
+      label: 'Description',
+      // icon: 'i-mdi-read-more-outline',
+      title: `${column.description}`,
+      children: [
+        {
+          label: `${column.title.slice(0, 20)} ...`,
+          icon: 'i-fluent-slide-text-title-24-regular',
+          description: column.description
+        }
+      ]
+    },
+    {
+      title: links === 1 ? props.rowParent?.original.urls[0] : 'Links to source(s)',
+      icon: 'i-octicon-link-24',
+      to: column.urlLink,
+      target: '_blank',
+      slot: 'components' as const,
+      /*
+      ui: {
+        leadingIcon: [ // This error in MS Code can be ignored
+          'transition-transform',
+          links === 1 ? 'duration-200 rotate-180' : 'collapsed-manually'
+        ]
+      },
+      */
+// children: linkChildren
+// }
+/*
+    {
+      title: 'Help',
+      icon: 'i-lucide-circle-help',
+      disabled: true
+    }
+    */
+// ]
+//
+// )
 </script>
 
 <template>
   <div>
     <!-- <span class="hidden">{{ templateExpandedHandler(props.rowParent) }}</span> -->
+    <!-- @vue-expect-error Types of property 'path' are incompatible. Type 'unknown' is not assignable to type 'undefined'. -->
     <UNavigationMenu
       :items="items"
       variant="pill"
