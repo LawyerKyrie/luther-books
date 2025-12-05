@@ -108,6 +108,7 @@ const items = ref<NavigationMenuItem[]>([{
     :items="items"
      variant="link"
     -->
+    <!-- @vue-expect-error Types of property 'path' are incompatible. Type 'unknown' is not assignable to type 'undefined'. -->
     <UNavigationMenu
       :items="items"
       variant="pill"
@@ -120,6 +121,7 @@ const items = ref<NavigationMenuItem[]>([{
     </template>
 
     <template #body>
+      <!-- @vue-expect-error Types of property 'path' are incompatible. Type 'unknown' is not assignable to type 'undefined'. -->
       <UNavigationMenu
         :items="items"
         type="single"

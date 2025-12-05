@@ -9,5 +9,8 @@ export default defineAppConfig({
         item: 'border-b border-default last:border-b-0'
       }
     }
+  },
+  typescript: {
+    typeCheck: true
   }
 })

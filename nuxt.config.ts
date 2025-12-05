@@ -8,19 +8,11 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-og-image'
   ],
-
-  devtools: {
-    enabled: true
-  },
-
   css: ['~/assets/css/main.css'],
-
   routeRules: {
     '/docs': { redirect: '/docs/about', prerender: false }
   },
-
   compatibilityDate: '2024-07-11',
-
   nitro: {
     prerender: {
       routes: [
@@ -29,7 +21,12 @@ export default defineNuxtConfig({
       crawlLinks: true
     }
   },
-
+  /* devtools: { enabled: true }, */
+  typescript: {
+    shim: false,
+    strict: false,
+    typeCheck: false
+  },
   eslint: {
     config: {
       stylistic: {

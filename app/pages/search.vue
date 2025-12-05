@@ -26,13 +26,13 @@ useSeoMeta({
 
 type RowCells = {
   id: number
-  tags: array
+  tags: string
   category: string
   title: string
   description: string
-  sources: array
-  urls: array
-  formats: array
+  sources: string
+  urls: string
+  formats: string
 }
 
 const { data: rows, pending } = await useFetch<RowCells[]>(
@@ -474,6 +474,7 @@ function collapsedVelseTemplateRow(row) {
       original div class="flex flex-col flex-1 w-full"
     -->
     <div class="w-full">
+      <!-- @vue-expect-error Types of property 'path' are incompatible. Type 'unknown' is not assignable to type 'undefined'. -->
       <UContextMenu :items="items">
         <!-- Activate sticky header with className: max-h-[312px] -->
         <UTable
