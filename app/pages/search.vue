@@ -379,6 +379,7 @@ const isRowExpanded = row => expandedRowId.value === row.original.id
 // Manually control the expanded state (only one ID at a time)
 const expandedRowId = ref<number | null>(null) // required to auto collapse
 const buttonElementRef = ref<HTMLDivElement | null>(null)
+const tBodyElementRef = ref<HTMLDivElement | null>(null)
 
 const savingRowOnExpand = async (row) => {
   // console.log('The function "savingRowOnExpand" is required to collapse expanded rows!')
@@ -388,7 +389,27 @@ const savingRowOnExpand = async (row) => {
     if (Object.keys(expanded.value).length === 1) {
       // This code is running on the second (2) expanded row
       await nextTick()
-      buttonElementRef.value = document.querySelector('tr > td> button[name="expanded"]')!
+      tBodyElementRef.value = document.querySelector('tbody')!
+      buttonElementRef.value = tBodyElementRef.value.querySelector('tr > td> button[name="expanded"]')!
+
+      fixNavButtonStyleWidth()
+      function fixNavButtonStyleWidth() {
+        const navDivWidth = tBodyElementRef.value.querySelector('nav[data-collapsed="false"] > div')!
+        if (navDivWidth) { // Happen only once (on the first expanded row)
+          navDivWidth.setAttribute('class', 'w-full')
+
+          const li1 = navDivWidth.querySelector('ul > li')!
+          li1.classList.add('flex-1')
+          const btnSpan2 = li1.querySelector('button > span:nth-child(2)')
+          btnSpan2.classList.add('w-full') // button > span[class="truncate"]
+          btnSpan2.classList.remove('truncate')
+
+          const li2 = navDivWidth.querySelector('ul > li:nth-child(2)')!
+          li2.classList.add('flex-1')
+          li2.querySelector('ul > li:nth-child(2)')
+          li2.querySelector('button > span:nth-child(2)').classList.add('w-full') // button > span[class="truncate"]
+        }
+      }
     }
   } // this else statement never happen
   fulfillAutoCollapsingOfRow()
@@ -413,8 +434,8 @@ function collapsedVelseTemplateRow(row) {
   if (last2rows.length === 2) last2rows.shift()
   last2rows.push(row.original.id)
   if (last2rows.length === 2 && last2rows[0] !== last2rows[1]) {
-    console.log(`Row ${last2rows[0]} Collapsed!`)
-    console.log(`Row ${last2rows[1]} Expanded!`)
+    // console.log(`Row ${last2rows[0]} Collapsed!`)
+    // console.log(`Row ${last2rows[1]} Expanded!`)
   }
 }
 
@@ -518,16 +539,10 @@ function collapsedVelseTemplateRow(row) {
             </UDropdownMenu>
           </template>
           <template #expanded="{ row }">
-            <span
-              v-if="isRowExpanded(row)"
-              id="expandedVif"
-            >
+            <span v-if="isRowExpanded(row)">
               <ExpandRow :row-parent="row" />
             </span>
-            <span
-              v-else
-              id="expandedVelse"
-            >
+            <span v-else>
               <span class="hidden">{{ collapsedVelseTemplateRow(row) }}</span>
               <ExpandRow :row-parent="row" />
             </span>
