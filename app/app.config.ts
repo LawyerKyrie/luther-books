@@ -8,6 +8,15 @@ export default defineAppConfig({
       slots: {
         item: 'border-b border-default last:border-b-0'
       }
+    },
+    button: {
+      variants: {
+        active: {
+          true: {
+            base: 'font-bold'
+          }
+        }
+      }
     }
   },
   typescript: {

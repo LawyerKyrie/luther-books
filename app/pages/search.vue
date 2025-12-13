@@ -30,14 +30,24 @@ type RowCells = {
   category: string
   title: string
   description: string
-  sources: string
   urls: string
   formats: string
 }
 
 const { data: rows, pending } = await useFetch<RowCells[]>(
   '/api/book-table',
-  {}
+  { /* // Didn't get the transform code to work - Try this code later
+    key: 'row-info',
+    transform: (data: { tags: string, urls: string, formats: string }[]) => {
+      // const rowId = props.rowParent?.original.id
+      return data?.map(useurl => ({
+        tag: String(useurl.tags),
+        url: String(useurl.urls),
+        format: String(useurl.formats),
+        length: Number(useurl.urls.length)
+      }))
+    } */
+  }
 )
 
 const columns: TableColumn<RowCells>[] = [
@@ -68,13 +78,6 @@ const columns: TableColumn<RowCells>[] = [
     header: ({ column }) => getHeader(column, '#'),
     cell: ({ row }) => `${row.getValue('id')}`
   },
-  /* // Hiding - Only showing this on expanded rows
-  {
-    accessorKey: 'tags',
-    header: ({ column }) => getHeader(column, 'Tag'),
-    cell: ({ row }) => `${row.getValue('tags')}`
-  },
-  */
   {
     accessorKey: 'category',
     header: ({ column }) => getHeader(column, 'Category'),
@@ -83,21 +86,28 @@ const columns: TableColumn<RowCells>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => getHeader(column, 'Title'),
-    cell: ({ row }) => `${row.getValue('title')}`
+    // cell: ({ row }) => `${row.getValue('title')}`
+    cell: ({ row }) => {
+      const title = row.original.title
+      return h('p', {
+        class: 'text-left font-medium',
+        onClick: () => { // only on title column
+          row.toggleExpanded()
+          savingRowOnExpand(row)
+        }
+      }, title)
+    }
   },
-  /* // Hiding - Only showing this on expanded rows
+  /* // Only showing this information on expanded rows, c.f. ExpandedRow.vue
   {
     accessorKey: 'description',
     header: ({ column }) => getHeader(column, 'Description'),
     cell: ({ row }) => `${row.getValue('description')}`
   },
   {
-    accessorKey: 'sources',
-    header: ({ column }) => getHeader(column, 'Source(s)'),
-    cell: ({ row }) => {
-      const sourceArray = JSON.stringify(row.original.sources)
-      return h('div', { class: 'text-right font-medium' }, sourceArray)
-    }
+    accessorKey: 'tags',
+    header: ({ column }) => getHeader(column, 'Tag'),
+    cell: ({ row }) => `${row.getValue('tags')}`
   },
   {
     accessorKey: 'urls',
@@ -198,24 +208,36 @@ const columnVisibility = ref({
   tags: false,
   category: false,
   description: false,
-  sources: false,
   urls: false,
   formats: false
 })
 /* End Visibility */
+
+/* Start to Extract hostname (domain) from URL */
+function getHostnameFromUrl(urlString) {
+  try {
+    const url = new URL(urlString)
+    return url.hostname
+  } catch (error) {
+    console.error('Invalid URL:', error)
+    return null
+  }
+} // Used in getDropdownActions()
+/* Finish with Extracting hostname (domain) from URL */
 
 /* Start Action (Slots) */
 function getDropdownActions(row: Row<RowCells>) {
   // Using this function instead of getRowCellsItems(row) {}
 
   let arrLength = true
-  if (row.original.sources.length === 1)
+  if (row.original.urls && row.original.urls.length === 1)
     arrLength = false
 
   const urlSourceArr = []
   for (let i = 0; i < row.original.urls.length; i++) {
+    const domain = getHostnameFromUrl(row.original.urls[i])
     const objLoop = {
-      label: arrLength ? `${row.original.tags[i]}` : `${row.original.sources[i]}`,
+      label: arrLength ? `${row.original.tags[i]}` : `${domain}`,
       icon: 'i-lucide-copy',
       title: `${row.original.formats[i]}`,
       onSelect: () => {
@@ -348,27 +370,7 @@ const pagination = ref({
 /* End Pagination */
 
 /* Creating clickable rows & simulate click if url-length === 1 */
-
-function openUrlOnRowClick(event, row) {
-  const urlLength = row.original.urls.length
-  if (urlLength === 1) { // follow the link on click
-    const url = JSON.stringify(row.original.urls[0]).slice(1, -1)
-    return navigateTo(`${url}`, {
-      open: {
-        target: '_blank'
-      }
-    })
-  } else if (urlLength > 1) { // then simulate click
-    const currentTd = event.target
-    const nextTd = currentTd.nextElementSibling
-    if (currentTd.tagName && nextTd.tagName === 'TD') {
-      const buttonInActionTd = nextTd.querySelector('button')
-      if (buttonInActionTd) {
-        buttonInActionTd.click()
-      }
-    }
-  }
-}
+// const functionWithEvent = (_e: Event, row: TableRow<RowCells>) => { }
 /* End of clickable rows */
 
 /* Start of expandable rows */
@@ -400,12 +402,14 @@ const savingRowOnExpand = async (row) => {
 
           const li1 = navDivWidth.querySelector('ul > li')!
           li1.classList.add('flex-1')
+          // li1.setAttribute('position', 'relative')
           const btnSpan2 = li1.querySelector('button > span:nth-child(2)')
           btnSpan2.classList.add('w-full') // button > span[class="truncate"]
           btnSpan2.classList.remove('truncate')
 
           const li2 = navDivWidth.querySelector('ul > li:nth-child(2)')!
           li2.classList.add('flex-1')
+          // li2.setAttribute('position', 'relative')
           li2.querySelector('ul > li:nth-child(2)')
           li2.querySelector('button > span:nth-child(2)').classList.add('w-full') // button > span[class="truncate"]
         }
@@ -495,7 +499,7 @@ function collapsedVelseTemplateRow(row) {
       original div class="flex flex-col flex-1 w-full"
     -->
     <div class="w-full">
-      <!-- @vue-expect-error Types of property 'path' are incompatible. Type 'unknown' is not assignable to type 'undefined'. -->
+      <!-- @vue-expect-error Types of property 'path' are incompatible. Type 'unknown' is not assignable to type 'undefined'... -->
       <UContextMenu :items="items">
         <!-- Activate sticky header with className: max-h-[312px] -->
         <UTable
@@ -523,7 +527,7 @@ function collapsedVelseTemplateRow(row) {
           "
           @hover="onHover"
           @contextmenu="onContextmenu"
-          @select="openUrlOnRowClick"
+          @select="console.log('expanded')"
         >
           <template #action-cell="{ row }">
             <UDropdownMenu
